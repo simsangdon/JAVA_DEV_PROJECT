@@ -90,6 +90,9 @@ public class SampleController {
         log.debug("vvvv");
         log.debug("vvvv");
         log.debug("vvvv");
+        log.debug("vvvv");
+        log.debug("vvvv");
+        log.debug("vvvv");
          
         mv.addObject("IDX", commandMap.get("IDX"));
         return mv;
