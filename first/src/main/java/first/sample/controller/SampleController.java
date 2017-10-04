@@ -85,6 +85,7 @@ public class SampleController {
     public ModelAndView updateBoard(CommandMap commandMap) throws Exception{
         ModelAndView mv = new ModelAndView("redirect:/sample/openBoardDetail.do");
         mv.addObject("IDX", commandMap.get("IDX"));
+        log.debug("ÀßµÇ³ª?");
         return mv;
     }
     
