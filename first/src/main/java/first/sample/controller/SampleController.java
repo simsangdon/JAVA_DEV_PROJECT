@@ -85,6 +85,11 @@ public class SampleController {
         ModelAndView mv = new ModelAndView("redirect:/sample/openBoardDetail.do");
          
         sampleService.updateBoard(commandMap.getMap());
+        
+        log.debug("vvvv");
+        log.debug("vvvv");
+        log.debug("vvvv");
+        log.debug("vvvv");
          
         mv.addObject("IDX", commandMap.get("IDX"));
         return mv;
