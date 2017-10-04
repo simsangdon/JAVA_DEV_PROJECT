@@ -77,7 +77,7 @@ public class SampleController {
          
         Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
         mv.addObject("map", map.get("map"));
-         
+        log.debug("test");
         return mv;
     }
     
