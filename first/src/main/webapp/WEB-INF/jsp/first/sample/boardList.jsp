@@ -42,6 +42,10 @@
     String streamStr = new BASE64Encoder().encode(buf);
     request.setAttribute("streamStr", streamStr);
     
+    
+    System.out.println("rtnMap______ : " + rtnMap);
+    System.out.println("rtnMap______ : " + rtnMap);
+    
 %>
 </head>
 <body>
