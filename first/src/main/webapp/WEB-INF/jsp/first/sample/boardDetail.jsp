@@ -15,41 +15,41 @@
 <%@ page import= "sun.misc.BASE64Encoder" %>
 <%@ page import= "sun.misc.BASE64Decoder" %>
 <%
-    String streamStr = request.getParameter("streamStr");
-    System.out.println("streamStr : " + streamStr);
+//     String streamStr = request.getParameter("streamStr");
+//     System.out.println("streamStr : " + streamStr);
 
-    byte[] rbuf = new BASE64Decoder().decodeBuffer(streamStr);
-    if (rbuf != null) {                                                                                 
-        ObjectInputStream objectIn = new ObjectInputStream( new ByteArrayInputStream(rbuf));            
-        Object obj = objectIn.readObject(); // Contains the object
-        Map<String, Object> rtnMap1 = (Map<String, Object>)obj;
-        Map<String, String> tmpMap  = null;
+//     byte[] rbuf = new BASE64Decoder().decodeBuffer(streamStr);
+//     if (rbuf != null) {                                                                                 
+//         ObjectInputStream objectIn = new ObjectInputStream( new ByteArrayInputStream(rbuf));            
+//         Object obj = objectIn.readObject(); // Contains the object
+//         Map<String, Object> rtnMap1 = (Map<String, Object>)obj;
+//         Map<String, String> tmpMap  = null;
         
-        Iterator<String> tmpItr = rtnMap1.keySet().iterator();
-        String kekStr           = "";
-        Object tmpObj           = null;
+//         Iterator<String> tmpItr = rtnMap1.keySet().iterator();
+//         String kekStr           = "";
+//         Object tmpObj           = null;
         
-        Iterator<String> tmpItr1 = null;
-        String kekStr1           = "";
+//         Iterator<String> tmpItr1 = null;
+//         String kekStr1           = "";
         
-        while(tmpItr.hasNext()) {
-            kekStr = tmpItr.next();
-            tmpObj = rtnMap1.get(kekStr); 
-            if(tmpObj instanceof Map) {
-                tmpMap = (Map<String, String>)tmpObj;
-                tmpItr1 = tmpMap.keySet().iterator();
+//         while(tmpItr.hasNext()) {
+//             kekStr = tmpItr.next();
+//             tmpObj = rtnMap1.get(kekStr); 
+//             if(tmpObj instanceof Map) {
+//                 tmpMap = (Map<String, String>)tmpObj;
+//                 tmpItr1 = tmpMap.keySet().iterator();
                 
-                while(tmpItr1.hasNext()) {
-                    kekStr1 = tmpItr1.next();
-                    System.out.println(kekStr1 + " : " + tmpMap.get(kekStr1));
-                }
+//                 while(tmpItr1.hasNext()) {
+//                     kekStr1 = tmpItr1.next();
+//                     System.out.println(kekStr1 + " : " + tmpMap.get(kekStr1));
+//                 }
                 
-            } else {
-                System.out.println(kekStr + " : " + tmpObj.toString());    
-            }
+//             } else {
+//                 System.out.println(kekStr + " : " + tmpObj.toString());    
+//             }
             
-        }
-    } 
+//         }
+//     } 
 
 %>
 </head>
