@@ -90,11 +90,8 @@ public class SampleController {
         log.debug("sdfsdfds");
         log.debug("sdfsdfds");
         log.debug("sdfsdfds");
-        sampleService.updateBoard(commandMap.getMap());
         
-        log.debug("sdfsdfds");
-        log.debug("sdfsdfds");
-        log.debug("sdfsdfds");
+        sampleService.updateBoard(commandMap.getMap());
          
         mv.addObject("IDX", commandMap.get("IDX"));
         return mv;
