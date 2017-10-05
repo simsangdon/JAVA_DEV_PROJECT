@@ -18,7 +18,8 @@
         <repository>
           <id>oracle</id>
           <name>ORACLE JDBC Repository</name>
-          <url>http://maven.jahia.org/maven2</url>
+<!--           <url>http://maven.jahia.org/maven2</url> -->
+          <url>https://maven.atlassian.com/3rdparty/</url>
         </repository>
     </repositories>
     <!-- oracle 추가  끝 -->
