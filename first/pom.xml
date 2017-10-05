@@ -38,6 +38,22 @@
             <version>1.2.0</version>
         </dependency>
         <!-- mybatis 추가 끝  -->
+        
+        <!-- poi 추가 시작 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.12</version>
+		</dependency>
+		<!-- poi 추가 끝 -->
+
+		<!-- poi-ooxml 추가 시작 -->		
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.12</version>
+		</dependency>		
+		<!-- poi-ooxml 추가 끝 -->
 
         <!-- oracle 추가  시작 -->
         <dependency>
