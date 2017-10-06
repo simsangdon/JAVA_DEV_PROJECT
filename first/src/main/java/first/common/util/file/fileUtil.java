@@ -180,7 +180,6 @@ public class fileUtil {
 	@SuppressWarnings("resource")
 	public void decodingFile(File file, String encoding) 
 	{
-		System.out.println("encoding : " + encoding);
 		try
 		{
 			Charset charset = Charset.forName(encoding);
