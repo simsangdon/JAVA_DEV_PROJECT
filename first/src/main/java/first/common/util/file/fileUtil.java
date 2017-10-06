@@ -65,7 +65,7 @@ public class fileUtil {
 	/*
 	 * 대상 노드가 폴더인 경우
 	 */
-	public void iterateDirectory(File file, String encoding) 
+	public void iterateDirectory(File file) 
 	{
 		try
 		{
@@ -80,12 +80,12 @@ public class fileUtil {
 				if(resFile.isDirectory())
 				{
 					// 해당 노드가 폴더이면 제귀호출
-					iterateDirectory(resFile, encoding);
+					iterateDirectory(resFile);
 				}
 				else
 				{
 					// 해당 노드가 파일이면 파일 처리 부분 호출
-					convertEncoding(resFile, encoding);
+					convertEncoding(resFile);
 				}
 			}
 		}
@@ -100,41 +100,8 @@ public class fileUtil {
 	 * 대상 노드가 파일인 경우
 	 */
 	@SuppressWarnings("unchecked")
-	public void convertEncoding(File file, String encoding) throws Exception 
-	{
-		// BufferReader사용
-		if(encoding != null && !"".equals(encoding))
-		{
-			try
-			{
-				BufferedReader in = new BufferedReader(new FileReader(file));
-				String read = null;
-				@SuppressWarnings("rawtypes")
-				List list = new ArrayList();
-				
-				while((read = in.readLine()) != null)
-				{
-					list.add(read);
-				}
-				in.close();
-				
-				File outFile = new File(file.getAbsolutePath() + "_OUT");
-				outFile.createNewFile();
-				
-				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding));
-				for (Object object : list) {
-					out.write((String)object);
-					out.newLine();
-				}
-				out.close();
-			}
-			catch (IOException ioe)
-			{
-				ioe.getMessage();
-				ioe.getStackTrace();
-			}
-		}
-		
+	public void convertEncoding(File file) throws Exception 
+	{	
 		// FileInputStream사용(file encoding확인)
 		try
 		{
@@ -161,7 +128,9 @@ public class fileUtil {
 				System.out.println("No encoding detected.");
 			}
 			detector.reset();
+			
 			//decodingFile(file, rtnEncoding);
+			//decodinigFileBufferReader(file, rtnEncoding);
 			decodingFileInputStream(file, rtnEncoding);
 		}
 		catch (IOException ioe)
@@ -172,9 +141,45 @@ public class fileUtil {
 		}
 	}
 	
+	/* encoding으로 변환한 STRING 파일에 쓰기(BufferReader사용) */
+	@SuppressWarnings("unchecked")
+	public void decodinigFileBufferReader(File file, String encoding) 
+	{
+		// BufferReader사용
+		try
+		{
+			BufferedReader in = new BufferedReader(new FileReader(file));
+			String read = null;
+			@SuppressWarnings("rawtypes")
+			List list = new ArrayList();
+			
+			while((read = in.readLine()) != null)
+			{
+				list.add(read);
+			}
+			in.close();
+			
+			File outFile = new File(file.getAbsolutePath() + "_OUT");
+			outFile.createNewFile();
+			
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding));
+			for (Object object : list) {
+				out.write((String)object);
+				out.newLine();
+			}
+			out.close();
+		}
+		catch (IOException ioe)
+		{
+			ioe.getMessage();
+			ioe.getStackTrace();
+		}			
+	}
+	
 	/* encoding으로 파일에 쓰기 */
 	@SuppressWarnings("resource")
-	public void decodingFile(File file, String encoding) {
+	public void decodingFile(File file, String encoding) 
+	{
 		System.out.println("encoding : " + encoding);
 		try
 		{
@@ -204,7 +209,8 @@ public class fileUtil {
 	
 	/* encoding타입으로 파일읅 읽어서 쓰기 */
 	@SuppressWarnings("resource")
-	public void decodingFileInputStream(File file, String encoding) throws Exception{
+	public void decodingFileInputStream(File file, String encoding) throws Exception
+	{
 		System.out.println("encoding : " + encoding);
 		try
 		{
@@ -216,11 +222,11 @@ public class fileUtil {
 			outFile.delete();
 			outFile.createNewFile();
 			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), "EUC-KR"));
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding));
 			
 			while((fileString = brd.readLine()) != null)
 			{
-				System.out.println("fileString : " + fileString);
+				//System.out.println("fileString : " + fileString);
 				out.write(fileString);
 				out.newLine();
 			}
