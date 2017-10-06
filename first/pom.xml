@@ -55,6 +55,14 @@
 		    <version>3.12</version>
 		</dependency>		
 		<!-- poi-ooxml 추가 끝 -->
+		
+		<!-- 파일인코딩 확인 추가 시작 -->
+		<dependency>
+		    <groupId>com.googlecode.juniversalchardet</groupId>
+		    <artifactId>juniversalchardet</artifactId>
+		    <version>1.0.3</version>
+		</dependency>		
+		<!-- 파일인코딩 확인 추가 끝 -->
 
         <!-- oracle 추가  시작 -->
         <dependency>

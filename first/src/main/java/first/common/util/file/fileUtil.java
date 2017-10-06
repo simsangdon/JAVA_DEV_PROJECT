@@ -3,12 +3,21 @@ package first.common.util.file;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.mozilla.universalchardet.UniversalDetector;
 
 public class fileUtil {
 
@@ -90,32 +99,145 @@ public class fileUtil {
 	/*
 	 * 대상 노드가 파일인 경우
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void convertEncoding(File file, String encoding) 
+	@SuppressWarnings("unchecked")
+	public void convertEncoding(File file, String encoding) throws Exception 
 	{
+		// BufferReader사용
+		if(encoding != null && !"".equals(encoding))
+		{
+			try
+			{
+				BufferedReader in = new BufferedReader(new FileReader(file));
+				String read = null;
+				@SuppressWarnings("rawtypes")
+				List list = new ArrayList();
+				
+				while((read = in.readLine()) != null)
+				{
+					list.add(read);
+				}
+				in.close();
+				
+				File outFile = new File(file.getAbsolutePath() + "_OUT");
+				outFile.createNewFile();
+				
+				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding));
+				for (Object object : list) {
+					out.write((String)object);
+					out.newLine();
+				}
+				out.close();
+			}
+			catch (IOException ioe)
+			{
+				ioe.getMessage();
+				ioe.getStackTrace();
+			}
+		}
+		
+		// FileInputStream사용(file encoding확인)
 		try
 		{
-			BufferedReader in = new BufferedReader(new FileReader(file));
-			String read = null;
-			List list = new ArrayList();
+			byte[] buf = new byte[4096];
+			@SuppressWarnings("resource")
+			FileInputStream fis = new FileInputStream(file);
+			UniversalDetector detector = new UniversalDetector(null);
+			int nread;
 			
-			while((read = in.readLine()) != null)
+			while((nread = fis.read(buf)) > 0 && !detector.isDone())
 			{
-				list.add(read);
+				detector.handleData(buf, 0, nread);
 			}
-			in.close();
+			detector.dataEnd();
 			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
-			for (Object object : list) {
-				out.write((String)object);
-				out.newLine();
+			String rtnEncoding = detector.getDetectedCharset();
+			
+			if(rtnEncoding != null)
+			{
+				System.out.println("Detected encoding : " + rtnEncoding);
 			}
-			out.close();
+			else
+			{
+				System.out.println("No encoding detected.");
+			}
+			detector.reset();
+			//decodingFile(file, rtnEncoding);
+			decodingFileInputStream(file, rtnEncoding);
 		}
 		catch (IOException ioe)
 		{
 			ioe.getMessage();
 			ioe.getStackTrace();
+			throw ioe;
+		}
+	}
+	
+	/* encoding으로 파일에 쓰기 */
+	@SuppressWarnings("resource")
+	public void decodingFile(File file, String encoding) {
+		System.out.println("encoding : " + encoding);
+		try
+		{
+			Charset charset = Charset.forName(encoding);
+			FileInputStream fis = new FileInputStream(file);
+			ByteArrayOutputStream fbs = new ByteArrayOutputStream();
+			
+			byte[] buffer = new byte[4096];
+			int n = 0;
+			
+			while((n = fis.read(buffer, 0, buffer.length)) > 0)
+			{
+				fbs.write(buffer, 0, n);
+			}
+			
+			CharBuffer charBuffer = charset.decode(ByteBuffer.wrap(fbs.toString().getBytes()));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+			bw.append(charBuffer);
+			bw.close();
+		}
+		catch(IOException ioe)
+		{
+			ioe.getMessage();
+			ioe.getStackTrace();
+		}
+	}
+	
+	/* encoding타입으로 파일읅 읽어서 쓰기 */
+	@SuppressWarnings("resource")
+	public void decodingFileInputStream(File file, String encoding) throws Exception{
+		System.out.println("encoding : " + encoding);
+		try
+		{
+			FileInputStream fis = new FileInputStream(file);
+			BufferedReader brd = new BufferedReader(new InputStreamReader(fis, encoding));
+			String fileString = null;
+			
+			File outFile = new File(file.getAbsolutePath() + "_OUT");
+			outFile.delete();
+			outFile.createNewFile();
+			
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), "EUC-KR"));
+			
+			while((fileString = brd.readLine()) != null)
+			{
+				System.out.println("fileString : " + fileString);
+				out.write(fileString);
+				out.newLine();
+			}
+			out.close();
+			System.out.println("sdsd");
+		}
+		catch(IOException ioe)
+		{
+			ioe.getMessage();
+			ioe.getStackTrace();
+			throw ioe;
+		}
+		catch(Exception e)
+		{
+			e.getMessage();
+			e.getStackTrace();
+			throw e;
 		}
 	}
 }

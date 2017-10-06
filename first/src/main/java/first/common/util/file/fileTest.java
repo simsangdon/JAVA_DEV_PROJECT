@@ -4,23 +4,22 @@ import java.io.File;
 
 public class fileTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		fileUtil fUtil = new fileUtil();
-		String filePath = "src\\main\\java\\first\\common\\util\\file\\testFile\\testFile1-UTF-8";
+		String inFilePath  = "src\\main\\java\\first\\common\\util\\file\\testFile\\testFile1-UTF-8";
 		//System.out.println(fUtil.readFile(filePath));
 		
-		File file = new File(filePath);
+		File inFile  = new File(inFilePath);
 		String encoding = "UTF-8";
 		
-		if(file.isDirectory())
+		if(inFile.isDirectory())
 		{
-			fUtil.iterateDirectory(file, encoding);
+			fUtil.iterateDirectory(inFile, encoding);
 		}
 		else
 		{
-			fUtil.convertEncoding(file, encoding);
+			fUtil.convertEncoding(inFile, "");
 		}
 	}
-
 }
