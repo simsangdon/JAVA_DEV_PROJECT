@@ -231,7 +231,6 @@ public class fileUtil {
 				out.newLine();
 			}
 			out.close();
-			System.out.println("sdsd");
 		}
 		catch(IOException ioe)
 		{
