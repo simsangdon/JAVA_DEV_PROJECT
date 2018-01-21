@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- org.mybatis.spring.SqlSessionFactoryBean가 관리하고 쿼리문을 추출하여 org.mybatis.spring.SqlSessionTemplate쪽을 리턴 한다. -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm-->
+<!-- mapper 태그선언 -->
+<!--mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm-->
+	<!-- namespace 속성값으로 [DAO 인터페이스명]이 오며 -->
+	<!-- [DAO 인터페이스] 메소드명과 동일한 id 값을 소유한 태그를 내포고 있다.-->
+<!--mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm-->
+
+<mapper namespace="com.naver.erp.LoginDAO">
+
+	<!--*******************************************************-->
+	<!-- [로그인 아이디,암호의 존재 개수] 검색하는 select 문을 내포한 <select> 태그 선언-->
+	<!--*******************************************************-->
+		<!-- <select> 태그 속성 설명-->
+			<!-- id="getAdmin_idCnt"      ==> SQL 구문의 고유 아이디값 설정. DAO 클래스의 메소드 이름과 동일함-->
+			<!-- parameterType="hashmap"  ==> SQL 구문에 삽입될 외부 데이터의 자료형 설정(java.util.HashMap로 사용해도 된다.)-->
+			<!-- resultType="int"         ==> SQL 구문의 실행 후 리턴값 자료형 설정-->
+	<!--*******************************************************-->
+	<select id="getAdminCnt" parameterType="hashmap"  resultType="int">
+		<!--==========================================-->
+		<!-- select 쿼리 선언.-->
+		<!--==========================================-->
+			<!-- HashMap 객체에 저장된 외부 데이터를 SQL 구문에 삽입하는 방법은 아래와 같다.-->
+			<!-- #{키값명} => 키값에 대응하는 데이터가 문자열이면 '(싱글퀴트) 로 감싸 삽입. 아니면 그대로 삽입.-->
+			<!-- ${키값명} => 키값에 대응하는 데이터를 그대로 삽입.-->
+		<!--==========================================-->
+		select count(*) from admin  where  admin_id=#{admin_id} and pwd=#{pwd} 
+	</select>
+		
+</mapper>
