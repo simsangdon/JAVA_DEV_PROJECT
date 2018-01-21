@@ -2,12 +2,14 @@ package first.common.util.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.ByteBuffer;
@@ -129,9 +131,13 @@ public class fileUtil {
 			}
 			detector.reset();
 			
-			//decodingFile(file, rtnEncoding);
-			//decodinigFileBufferReader(file, rtnEncoding);
-			decodingFileInputStream(file, rtnEncoding);
+			File outFile = new File(file.getPath() + "_OUT");
+			outFile.delete();
+			outFile.createNewFile();
+			
+			//decodinigFileBufferReader(file, outFile, rtnEncoding);
+			decodingFile(file, outFile, rtnEncoding);
+			//decodingFileInputStream(file, outFile, rtnEncoding);
 		}
 		catch (IOException ioe)
 		{
@@ -143,7 +149,7 @@ public class fileUtil {
 	
 	/* encoding으로 변환한 STRING 파일에 쓰기(BufferReader사용) */
 	@SuppressWarnings("unchecked")
-	public void decodinigFileBufferReader(File file, String encoding) 
+	public void decodinigFileBufferReader(File file, File outFile, String encoding) 
 	{
 		// BufferReader사용
 		try
@@ -158,9 +164,6 @@ public class fileUtil {
 				list.add(read);
 			}
 			in.close();
-			
-			File outFile = new File(file.getAbsolutePath() + "_OUT");
-			outFile.createNewFile();
 			
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding));
 			for (Object object : list) {
@@ -178,12 +181,13 @@ public class fileUtil {
 	
 	/* encoding으로 파일에 쓰기 */
 	@SuppressWarnings("resource")
-	public void decodingFile(File file, String encoding) 
+	public void decodingFile(File file, File outFile, String encoding) 
 	{
 		try
 		{
 			Charset charset = Charset.forName(encoding);
 			FileInputStream fis = new FileInputStream(file);
+			//InputStreamReader inputStream = new InputStreamReader(fis, encoding);
 			ByteArrayOutputStream fbs = new ByteArrayOutputStream();
 			
 			byte[] buffer = new byte[4096];
@@ -195,7 +199,7 @@ public class fileUtil {
 			}
 			
 			CharBuffer charBuffer = charset.decode(ByteBuffer.wrap(fbs.toString().getBytes()));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
 			bw.append(charBuffer);
 			bw.close();
 		}
@@ -206,9 +210,9 @@ public class fileUtil {
 		}
 	}
 	
-	/* encoding타입으로 파일읅 읽어서 쓰기 */
+	/* encoding타입으로 파일을 읽어서 쓰기 */
 	@SuppressWarnings("resource")
-	public void decodingFileInputStream(File file, String encoding) throws Exception
+	public void decodingFileInputStream(File file, File outFile, String encoding) throws Exception
 	{
 		System.out.println("encoding : " + encoding);
 		try
@@ -217,11 +221,13 @@ public class fileUtil {
 			BufferedReader brd = new BufferedReader(new InputStreamReader(fis, encoding));
 			String fileString = null;
 			
-			File outFile = new File(file.getAbsolutePath() + "_OUT");
-			outFile.delete();
-			outFile.createNewFile();
-			
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding));
+			
+			char[] charBuffer = new char[4096];
+			brd.read(charBuffer, 0, 6);
+			out.write(charBuffer, 0, 6);
+			brd.read(charBuffer, 6, 6);
+			out.write(charBuffer, 6, 6);
 			
 			while((fileString = brd.readLine()) != null)
 			{

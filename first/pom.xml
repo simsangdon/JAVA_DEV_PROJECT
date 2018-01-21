@@ -65,11 +65,17 @@
 		<!-- 파일인코딩 확인 추가 끝 -->
 
         <!-- oracle 추가  시작 -->
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.1.0.7.0</version>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.oracle</groupId> -->
+<!--             <artifactId>ojdbc6</artifactId> -->
+<!--             <version>11.1.0.7.0</version> -->
+<!--         </dependency> -->
+        
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>12.1.0.1-atlassian-hosted</version>
+		</dependency>        
         <!-- oracle 추가  끝 -->
 
         <!-- DB관련 시작 -->
